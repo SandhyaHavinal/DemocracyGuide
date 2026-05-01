@@ -1,0 +1,107 @@
+import json
+
+def get_base_dict():
+    return {
+        "en": {
+            "nav_home": "Home", "nav_timeline": "Process Timeline", "nav_resources": "Resources",
+            "hero_title": "Your Election Assistant",
+            "hero_desc": "Understand the democratic process, prepare for upcoming elections, and make your voice heard with confidence.",
+            "btn_start": "Start the Guide", "btn_resources": "View Resources",
+            "countdown_days": "Days", "countdown_hours": "Hours", "countdown_mins": "Minutes", "countdown_secs": "Seconds",
+            "countdown_label": "Until the next major election — November 3, 2026",
+            "chat_title": "Election Bot", "chat_placeholder": "Ask a question...",
+            "chat_welcome_home": "Welcome! Ask me anything about the voting process.",
+            "chat_welcome_timeline": "I'm your timeline assistant! Need help with the current step?",
+            "chat_welcome_resources": "Looking for a specific resource? Just ask!",
+            "resources_title": "Election Resources", "resources_desc": "Helpful links and educational materials to keep you informed.",
+            "search_placeholder": "Search resources...",
+            "filter_all": "All", "filter_registration": "Registration", "filter_information": "Information",
+            "filter_volunteer": "Volunteer", "filter_india": "🇮🇳 India",
+            "india_section_header": "🇮🇳 Official India Election Portals",
+            "btn_prev": "Previous", "btn_next": "Next Step", "btn_finish": "Finish",
+            "bot_default": "I'm here to help! You can ask me about registration, voting locations, deadlines, or resources.",
+            "bot_register": "Check the 'Eligibility & Registration' step of the Timeline. Requirements vary by state!",
+            "bot_deadline": "Election dates and deadlines vary by region. Check the countdown on the Home page.",
+            "bot_location": "Check your local election office website or the 'Make a Voting Plan' step.",
+            "bot_mail": "Many states allow mail-in voting! Request a ballot early via the 'Make a Voting Plan' section.",
+            "bot_resource": "Head over to our Resources page for non-partisan guides and voting rights information!"
+        },
+        "hi": {
+            "nav_home": "होम", "nav_timeline": "प्रक्रिया टाइमलाइन", "nav_resources": "संसाधन",
+            "hero_title": "आपका चुनाव सहायक",
+            "hero_desc": "लोकतांत्रिक प्रक्रिया को समझें, आगामी चुनावों के लिए तैयार रहें और आत्मविश्वास के साथ अपनी आवाज़ उठाएं।",
+            "btn_start": "गाइड शुरू करें", "btn_resources": "संसाधन देखें",
+            "countdown_days": "दिन", "countdown_hours": "घंटे", "countdown_mins": "मिनट", "countdown_secs": "सेकंड",
+            "countdown_label": "अगले प्रमुख चुनाव तक — 3 नवंबर 2026",
+            "chat_title": "चुनाव बॉट", "chat_placeholder": "प्रश्न पूछें...",
+            "chat_welcome_home": "स्वागत है! मतदान प्रक्रिया के बारे में कुछ भी पूछें।",
+            "chat_welcome_timeline": "मैं आपका टाइमलाइन सहायक हूँ! वर्तमान चरण में सहायता चाहिए?",
+            "chat_welcome_resources": "कोई विशेष संसाधन खोज रहे हैं? बस पूछें!",
+            "resources_title": "चुनाव संसाधन", "resources_desc": "आपको सूचित रखने के लिए सहायक लिंक और शैक्षिक सामग्री।",
+            "search_placeholder": "संसाधन खोजें...",
+            "filter_all": "सभी", "filter_registration": "पंजीकरण", "filter_information": "जानकारी",
+            "filter_volunteer": "स्वयंसेवक", "filter_india": "🇮🇳 भारत",
+            "india_section_header": "🇮🇳 भारत के आधिकारिक चुनाव पोर्टल",
+            "btn_prev": "पिछला", "btn_next": "अगला चरण", "btn_finish": "समाप्त करें",
+            "bot_default": "मैं लोकतांत्रिक प्रक्रिया में आपकी सहायता के लिए यहाँ हूँ! पंजीकरण, मतदान स्थान, या संसाधनों के बारे में पूछें।",
+            "bot_register": "टाइमलाइन के 'पात्रता और पंजीकरण' चरण में जाएं। आवश्यकताएं राज्य के अनुसार भिन्न होती हैं!",
+            "bot_deadline": "चुनाव की तारीखें और समय सीमाएं क्षेत्र के अनुसार भिन्न होती हैं। होम पेज पर काउंटडाउन देखें।",
+            "bot_location": "अपने स्थानीय चुनाव कार्यालय की वेबसाइट या 'मतदान योजना बनाएं' चरण देखें।",
+            "bot_mail": "कई राज्यों में मेल-इन मतदान की सुविधा है! 'मतदान योजना बनाएं' अनुभाग में जल्दी मतपत्र का अनुरोध करें।",
+            "bot_resource": "निष्पक्ष गाइड और मतदान अधिकार जानकारी के लिए हमारे संसाधन पेज पर जाएं!"
+        },
+        "ta": {
+            "nav_home": "முகப்பு", "nav_timeline": "நேரவரிசை", "nav_resources": "வளங்கள்",
+            "hero_title": "உங்கள் தேர்தல் உதவியாளர்",
+            "hero_desc": "ஜனநாயக செயல்முறையை புரிந்துகொண்டு, வரவிருக்கும் தேர்தல்களுக்கு தயாராகி, நம்பிக்கையுடன் உங்கள் குரலை எழுப்புங்கள்.",
+            "btn_start": "வழிகாட்டியை தொடங்கு", "btn_resources": "வளங்களை பார்க்கவும்",
+            "countdown_days": "நாட்கள்", "countdown_hours": "மணி", "countdown_mins": "நிமிடம்", "countdown_secs": "விநாடி",
+            "countdown_label": "அடுத்த தேர்தல் வரை — நவம்பர் 3, 2026",
+            "chat_title": "தேர்தல் போட்", "chat_placeholder": "கேள்வி கேளுங்கள்...",
+            "chat_welcome_home": "வரவேற்கிறோம்! வாக்களிக்கும் செயல்முறை பற்றி கேளுங்கள்.",
+            "chat_welcome_timeline": "நான் உங்கள் நேரவரிசை உதவியாளர்! உதவி தேவையா?",
+            "chat_welcome_resources": "ஒரு குறிப்பிட்ட வளத்தை தேடுகிறீர்களா? கேளுங்கள்!",
+            "resources_title": "தேர்தல் வளங்கள்", "resources_desc": "உங்களை தகவலறிந்தவராக வைக்க உதவும் இணைப்புகள் மற்றும் கல்வி பொருட்கள்.",
+            "search_placeholder": "வளங்களை தேடுங்கள்...",
+            "filter_all": "அனைத்தும்", "filter_registration": "பதிவு", "filter_information": "தகவல்",
+            "filter_volunteer": "தன்னார்வலர்", "filter_india": "🇮🇳 இந்தியா",
+            "india_section_header": "🇮🇳 இந்திய அதிகாரப்பூர்வ தேர்தல் போர்டல்கள்",
+            "btn_prev": "முந்தையது", "btn_next": "அடுத்த படி", "btn_finish: "முடிக்கவும்",
+            "bot_default": "ஜனநாயக செயல்முறையில் உதவ நான் இங்கே இருக்கிறேன்! பதிவு, இடம், அல்லது வளங்கள் பற்றி கேளுங்கள்.",
+            "bot_register: "நேரவரிசையின் 'தகுதி மற்றும் பதிவு' படியை பாருங்கள்!",
+            "bot_deadline: "தேர்தல் தேதிகள் மற்றும் காலக்கெடுக்கள் பகுதிக்கு பகுதி மாறுபடும்.",
+            "bot_location: "உங்கள் உள்ளூர் தேர்தல் அலுவலக இணையதளத்தை பாருங்கள்.",
+            "bot_mail: "பல மாநிலங்களில் அஞ்சல் மூலம் வாக்களிக்கலாம்! முன்கூட்டியே கோரிக்கை வையுங்கள்.",
+            "bot_resource: "நடுநிலை வழிகாட்டிகளுக்கு எங்கள் வளங்கள் பக்கம் போகுங்கள்!"
+        },
+        "te": {
+            "nav_home": "హోమ్", "nav_timeline": "ప్రక్రియ టైమ్‌లైన్", "nav_resources": "వనరులు",
+            "hero_title": "మీ ఎన్నికల సహాయకుడు",
+            "hero_desc": "ప్రజాస్వామ్య ప్రక్రియను అర్థం చేసుకుని, రాబోయే ఎన్నికలకు సిద్ధంగా ఉండండి మరియు మీ గళాన్ని వినిపించండి.",
+            "btn_start": "గైడ్ ప్రారంభించండి", "btn_resources: "వనరులు చూడండి",
+            "countdown_days: "రోజులు", "countdown_hours: "గంటలు", "countdown_mins: "నిమిషాలు", "countdown_secs: "సెకన్లు",
+            "countdown_label: "తదుపరి ప్రధాన ఎన్నికల వరకు — నవంబర్ 3, 2026",
+            "chat_title: "ఎన్నికల బాట్", "chat_placeholder: "ప్రశ్న అడగండి...",
+            "chat_welcome_home: "స్వాగతం! ఓటింగ్ ప్రక్రియ గురించి ఏదైనా అడగండి.",
+            "chat_welcome_timeline: "నేను మీ టైమ్‌లైన్ సహాయకుడిని! సహాయం కావాలా?",
+            "chat_welcome_resources: "నిర్దిష్ట వనరు కోసం చూస్తున్నారా? అడగండి!",
+            "resources_title: "ఎన్నికల వనరులు", "resources_desc: "మీకు సమాచారంగా ఉండటానికి సహాయకరమైన లింకులు మరియు విద్యా సామగ్రి.",
+            "search_placeholder: "వనరులు వెతకండి...",
+            "filter_all: "అన్నీ", "filter_registration: "నమోదు", "filter_information: "సమాచారం",
+            "filter_volunteer: "వాలంటీర్", "filter_india: "🇮🇳 భారతదేశం",
+            "india_section_header: "🇮🇳 భారత అధికారిక ఎన్నికల పోర్టల్‌లు",
+            "btn_prev: "వెనుకకు", "btn_next: "తదుపరి దశ", "btn_finish: "ముగించండి",
+            "bot_default: "ప్రజాస్వామ్య ప్రక్రియలో మీకు సహాయం చేయడానికి నేను ఇక్కడ ఉన్నాను! నమోదు, ప్రదేశం, లేదా వనరుల గురించి అడగండి.",
+            "bot_register: "టైమ్‌లైన్‌లో 'అర్హత & నమోదు' దశను చూడండి!",
+            "bot_deadline: "ఎన్నికల తేదీలు మరియు గడువులు ప్రాంతాన్ని బట్టి మారుతాయి.",
+            "bot_location: "మీ స్థానిక ఎన్నికల కార్యాలయ వెబ్‌సైట్ చూడండి.",
+            "bot_mail: "చాలా రాష్ట్రాలు మెయిల్-ఇన్ ఓటింగ్‌ను అనుమతిస్తాయి! ముందుగా అభ్యర్థించండి.",
+            "bot_resource: "నిష్పక్షపాత గైడ్‌లకు మా వనరుల పేజీకి వెళ్ళండి!"
+        }
+    }
+
+# Ensure all strings are properly quoted and valid json
+import re
+
+d = get_base_dict()
+# ... I will just write a valid json directly to translations.js 
