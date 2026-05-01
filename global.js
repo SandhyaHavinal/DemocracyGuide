@@ -1,4 +1,6 @@
 // global.js
+const GEMINI_API_KEY = "AIzaSyAP_aNaRYaMdmtdbHJzr9RBaVfNm2xuqhw";
+
 document.addEventListener('DOMContentLoaded', () => {
     // Setup Chat Bot
     const chatFab = document.getElementById('chatFab');
@@ -40,11 +42,50 @@ document.addEventListener('DOMContentLoaded', () => {
         userMsg.className = 'chat-message user';
         userMsg.innerHTML = `<p>${text}</p>`;
         chatBody.appendChild(userMsg);
-        
+
         chatInput.value = '';
         chatBody.scrollTop = chatBody.scrollHeight;
 
-        setTimeout(() => {
+        const geminiKey = GEMINI_API_KEY;
+
+        if (geminiKey && geminiKey !== "YOUR_GEMINI_API_KEY_HERE") {
+            addBotMessage('...');
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`;
+
+            const payload = {
+                contents: [{
+                    role: "user",
+                    parts: [{ text: `You are a helpful, non-partisan election assistant for DemocracyGuide. Keep your answer brief (1-3 sentences), factual, and directly related to voting. User query: ${text}` }]
+                }]
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(res => res.json()).then(async data => {
+                const tempMsg = chatBody.lastElementChild;
+                if (tempMsg) chatBody.removeChild(tempMsg);
+
+                if (data.candidates && data.candidates.length > 0) {
+                    let responseText = data.candidates[0].content.parts[0].text;
+                    addBotMessage(responseText);
+                } else {
+                    executeFuseFallback(text);
+                }
+            }).catch(err => {
+                console.error("Gemini API Error:", err);
+                const tempMsg = chatBody.lastElementChild;
+                if (tempMsg) chatBody.removeChild(tempMsg);
+                executeFuseFallback(text);
+            });
+        } else {
+            setTimeout(() => {
+                executeFuseFallback(text);
+            }, 500);
+        }
+
+        function executeFuseFallback(query) {
             let botResponse = t('bot_default');
 
             const intents = [
@@ -56,33 +97,21 @@ document.addEventListener('DOMContentLoaded', () => {
             ];
 
             if (typeof Fuse !== 'undefined') {
-                const fuse = new Fuse(intents, {
-                    keys: ['keywords'],
-                    threshold: 0.4,
-                    includeScore: true
-                });
-                
-                const result = fuse.search(text);
+                const fuse = new Fuse(intents, { keys: ['keywords'], threshold: 0.4, includeScore: true });
+                const result = fuse.search(query);
                 if (result.length > 0 && result[0].score <= 0.4) {
                     botResponse = t(result[0].item.key);
                 }
             } else {
-                // Fallback basic keyword matching
-                const lowerText = text.toLowerCase();
-                if (lowerText.includes("register") || lowerText.includes("registration") || lowerText.includes("पंजीकरण") || lowerText.includes("பதிவு") || lowerText.includes("నమోదు")) {
-                    botResponse = t('bot_register');
-                } else if (lowerText.includes("when") || lowerText.includes("deadline") || lowerText.includes("date") || lowerText.includes("समय") || lowerText.includes("கால")) {
-                    botResponse = t('bot_deadline');
-                } else if (lowerText.includes("where") || lowerText.includes("location") || lowerText.includes("poll") || lowerText.includes("स्थान") || lowerText.includes("இடம்")) {
-                    botResponse = t('bot_location');
-                } else if (lowerText.includes("mail") || lowerText.includes("absentee") || lowerText.includes("मेल") || lowerText.includes("அஞ்சல்")) {
-                    botResponse = t('bot_mail');
-                } else if (lowerText.includes("resource") || lowerText.includes("help") || lowerText.includes("learn") || lowerText.includes("संसाधन") || lowerText.includes("வளம்")) {
-                    botResponse = t('bot_resource');
-                }
+                const lowerText = query.toLowerCase();
+                if (lowerText.includes("register") || lowerText.includes("registration")) botResponse = t('bot_register');
+                else if (lowerText.includes("when") || lowerText.includes("deadline") || lowerText.includes("date")) botResponse = t('bot_deadline');
+                else if (lowerText.includes("where") || lowerText.includes("location") || lowerText.includes("poll")) botResponse = t('bot_location');
+                else if (lowerText.includes("mail") || lowerText.includes("absentee")) botResponse = t('bot_mail');
+                else if (lowerText.includes("resource") || lowerText.includes("help")) botResponse = t('bot_resource');
             }
 
             addBotMessage(botResponse);
-        }, 1000);
+        }
     }
 });

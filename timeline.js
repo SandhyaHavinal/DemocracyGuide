@@ -125,14 +125,49 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         });
 
+        let extraHtml = '';
+        if (currentStepIndex === 2) {
+            extraHtml = `
+                <div class="map-integration">
+                    <h3 style="margin-bottom: 1rem; color: var(--secondary-accent);"><i class='bx bx-map-alt'></i> Find Your Election Office</h3>
+                    <div class="map-search-container">
+                        <input type="text" id="mapSearchInput" placeholder="Enter your city or zip code...">
+                        <button id="mapSearchBtn" class="btn btn-primary">Search</button>
+                    </div>
+                    <div class="map-container">
+                        <iframe id="googleMapFrame" src="https://maps.google.com/maps?q=election+office&output=embed" loading="lazy"></iframe>
+                    </div>
+                </div>
+            `;
+        }
+
         newContent.innerHTML = `
             <h2>${stepData.title}</h2>
             <p>${stepData.description}</p>
             <div class="step-details">${cardsHtml}</div>
+            ${extraHtml}
         `;
         
         stepContent.parentNode.replaceChild(newContent, stepContent);
         stepContent = newContent;
+
+        if (currentStepIndex === 2) {
+            const mapSearchBtn = document.getElementById('mapSearchBtn');
+            const mapSearchInput = document.getElementById('mapSearchInput');
+            const googleMapFrame = document.getElementById('googleMapFrame');
+            
+            if (mapSearchBtn && mapSearchInput && googleMapFrame) {
+                mapSearchBtn.addEventListener('click', () => {
+                    const query = mapSearchInput.value.trim();
+                    if (query) {
+                        googleMapFrame.src = `https://maps.google.com/maps?q=election+office+near+${encodeURIComponent(query)}&output=embed`;
+                    }
+                });
+                mapSearchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') mapSearchBtn.click();
+                });
+            }
+        }
 
         prevBtn.disabled = currentStepIndex === 0;
         if (currentStepIndex === currentSteps.length - 1) {
