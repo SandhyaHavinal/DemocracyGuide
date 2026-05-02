@@ -1,5 +1,5 @@
 // global.js
-const GEMINI_API_KEY = "AIzaSyAP_aNaRYaMdmtdbHJzr9RBaVfNm2xuqhw";
+const GEMINI_API_KEY = "your_gemini_api_key";
 
 document.addEventListener('DOMContentLoaded', () => {
     // Setup Chat Bot
